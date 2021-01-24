@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 
-public class Triangle extends Figure{
+public class TriangleFigure extends Figure{
 	
 	private static final int DEFAULT_BASE = 100;
 	private static final int DEFAULT_ALTURA = 100;
@@ -17,7 +17,7 @@ public class Triangle extends Figure{
 	private int altura;
 	private int base;
 	
-	protected Triangle(int x, int y) {
+	protected TriangleFigure(int x, int y) {
 		super(x, y, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
 		altura = DEFAULT_ALTURA;
 		base = DEFAULT_BASE;
@@ -40,8 +40,8 @@ public class Triangle extends Figure{
 		
 	}
 	
-	public static Triangle getDefault(int x, int y) {
-		return new Triangle(x, y);
+	public static TriangleFigure getDefault(int x, int y) {
+		return new TriangleFigure(x, y);
 	}
 	
 	@Override

@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-public class Circle extends Figure{
+public class CircleFigure extends Figure{
 
 	private static final int DEFAULT_RADIUS = 50;
 	private static final Color DEFAULT_BORDER_COLOR = new Color(255, 0, 0);
@@ -13,7 +13,7 @@ public class Circle extends Figure{
 
 	private int radius;
 	
-	protected Circle(int x, int y) {
+	protected CircleFigure(int x, int y) {
 		super(x, y, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
 		radius = DEFAULT_RADIUS;
 	}
@@ -26,15 +26,10 @@ public class Circle extends Figure{
 		g2d.drawOval(x-this.radius, y-this.radius, this.radius*2, this.radius*2);
 		g2d.setColor(fillColor);
 		g2d.fillOval(x-this.radius, y-this.radius, radius*2, radius*2);
-		if(includesPoint(0, 0)) {
-			System.out.println("Si");
-		}else {
-			System.out.println("No");
-		}
 	}
 	
-	public static Circle getDefault(int x, int y) {
-		return new Circle(x, y);
+	public static CircleFigure getDefault(int x, int y) {
+		return new CircleFigure(x, y);
 	}
 
 	@Override

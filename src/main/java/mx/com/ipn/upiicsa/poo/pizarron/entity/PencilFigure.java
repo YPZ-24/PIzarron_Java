@@ -8,7 +8,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pencil extends Figure{
+public class PencilFigure extends Figure{
 
 	private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
 	private static final Color DEFAULT_FILL_COLOR = Color.WHITE;
@@ -16,7 +16,7 @@ public class Pencil extends Figure{
 	private List<Point> points;
 	
 	
-	protected Pencil(int x, int y) {
+	protected PencilFigure(int x, int y) {
 		super(x, y, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
 		points = new ArrayList<Point>();
 		points.add(new Point(x,y));
@@ -36,8 +36,8 @@ public class Pencil extends Figure{
 		}
 	}
 	
-	public static Pencil getDefault(int x, int y) {
-		return new Pencil(x,y);
+	public static PencilFigure getDefault(int x, int y) {
+		return new PencilFigure(x,y);
 	}
 	
 	public void addPoint(int x, int y) {

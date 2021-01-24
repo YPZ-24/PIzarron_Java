@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-public class Square extends Figure{
+public class SquareFigure extends Figure{
 	
 	private static final int DEFAULT_SIDE = 100;
 	private static final Color DEFAULT_BORDER_COLOR = new Color(255, 0, 0);
@@ -13,7 +13,7 @@ public class Square extends Figure{
 	
 	private int side;
 	
-	protected Square(int x, int y) {
+	protected SquareFigure(int x, int y) {
 		super(x,y, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
 		side = DEFAULT_SIDE;
 	}
@@ -28,8 +28,8 @@ public class Square extends Figure{
 		g2d.fillRect(x-(side/2)+1, y-(side/2)+1, side-1, side-1);
 	}
 	
-	public static Square getDefault(int x, int y) {
-		return new Square(x, y);
+	public static SquareFigure getDefault(int x, int y) {
+		return new SquareFigure(x, y);
 	}
 	
 	@Override

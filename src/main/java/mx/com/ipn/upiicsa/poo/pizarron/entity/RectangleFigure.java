@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-public class Rectangle extends Figure{
+public class RectangleFigure extends Figure{
 	private static final int DEFAULT_SIDE_A = 150;
 	private static final int DEFAULT_SIDE_B = 80;
 	private static final Color DEFAULT_BORDER_COLOR = new Color(255, 0, 0);
@@ -14,7 +14,7 @@ public class Rectangle extends Figure{
 	private int base;
 	private int altura;
 	
-	protected Rectangle(int x, int y) {
+	protected RectangleFigure(int x, int y) {
 		super(x,y, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
 		base = DEFAULT_SIDE_A;
 		altura = DEFAULT_SIDE_B;
@@ -30,8 +30,8 @@ public class Rectangle extends Figure{
 		g2d.fillRect((x-(base/2))+1, (y-(altura/2))+1, base-1, altura-1);
 	}
 	
-	public static Rectangle getDefault(int x, int y) {
-		return new Rectangle(x, y);
+	public static RectangleFigure getDefault(int x, int y) {
+		return new RectangleFigure(x, y);
 	}
 
 	@Override

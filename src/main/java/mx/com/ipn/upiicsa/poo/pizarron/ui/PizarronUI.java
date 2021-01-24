@@ -4,27 +4,32 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import mx.com.ipn.upiicsa.poo.pizarron.entity.Circle;
+import mx.com.ipn.upiicsa.poo.pizarron.entity.CircleFigure;
 import mx.com.ipn.upiicsa.poo.pizarron.entity.Figure;
-import mx.com.ipn.upiicsa.poo.pizarron.entity.Pencil;
-import mx.com.ipn.upiicsa.poo.pizarron.entity.Rectangle;
-import mx.com.ipn.upiicsa.poo.pizarron.entity.Square;
-import mx.com.ipn.upiicsa.poo.pizarron.entity.Triangle;
+import mx.com.ipn.upiicsa.poo.pizarron.entity.ImageFigure;
+import mx.com.ipn.upiicsa.poo.pizarron.entity.PencilFigure;
+import mx.com.ipn.upiicsa.poo.pizarron.entity.RectangleFigure;
+import mx.com.ipn.upiicsa.poo.pizarron.entity.SquareFigure;
+import mx.com.ipn.upiicsa.poo.pizarron.entity.TextFigure;
+import mx.com.ipn.upiicsa.poo.pizarron.entity.TriangleFigure;
 import mx.com.ipn.upiicsa.poo.pizarron.exception.DrawException;
 import mx.com.ipn.upiicsa.poo.pizarron.pr.PizarronPr;
 import mx.com.ipn.upiicsa.poo.pizarron.util.DrawingStates;
@@ -36,6 +41,7 @@ public class PizarronUI extends JFrame{
 	
 	private ArrayList<Figure> figuras;
 	private Figure figureSelected;
+	private File imageSelected;
 	
 	private JPanel optionsPanel;
 	private JPanel toolPanel;
@@ -46,6 +52,13 @@ public class PizarronUI extends JFrame{
 	private JButton btnRectangle;
 	private JButton btnPencil;
 	private JButton btnCursor;
+	private JButton btnText;
+	private JButton btnImage;
+	private JButton btnExit;
+	private JButton btnDelete;
+	private JButton btnSave;
+	
+	private JFileChooser imageFileChooser;
 	
 	private JButton btnFillColor;
 	private JButton btnBorderColor;
@@ -79,6 +92,15 @@ public class PizarronUI extends JFrame{
 	
 	private Color showColorChooser(JColorChooser chooser){
 		return chooser.showDialog(this,"Selecciona el color", Color.BLACK);
+	}
+	
+	private File showImageFileChooser() {
+		File file = null;
+		int returnValue = imageFileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            file = imageFileChooser.getSelectedFile();
+        }
+        return file;
 	}
 
 	private void initializeListeners() {
@@ -149,6 +171,21 @@ public class PizarronUI extends JFrame{
 				selectedTool = ToolCodes.TOOL_UNSELECT;				
 			}
 		});
+		btnText.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				selectedTool = ToolCodes.TOOL_TEXT;				
+			}
+		});
+		btnImage.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				imageSelected = showImageFileChooser();
+				if(imageSelected!=null) {
+					selectedTool = ToolCodes.TOOL_IMAGE;
+				}
+			}
+		});
 		dashboardPanel.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -202,7 +239,7 @@ public class PizarronUI extends JFrame{
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if(drawingState == DrawingStates.DRAWING_ACTIVE && selectedTool == ToolCodes.TOOL_PENCIL){
-					Pencil pencil = (Pencil) pencilTemp;
+					PencilFigure pencil = (PencilFigure) pencilTemp;
 					pencil.addPoint(e.getX(), e.getY());
 					pencil.paint(dashboardPanel.getGraphics());
 				}else if(drawingState == DrawingStates.DRAWING_ACTIVE && selectedTool == ToolCodes.TOOL_UNSELECT) {
@@ -219,6 +256,17 @@ public class PizarronUI extends JFrame{
 						
 						//AQUÍ DEBEMOS ELIMINAR LA FIGURA QUE QUEDO EN EL RASTRO
 						
+						Graphics2D g2d = (Graphics2D)(dashboardPanel.getGraphics());
+						g2d.clearRect(0, 0, dashboardPanel.getWidth(), dashboardPanel.getHeight());
+						
+						
+						System.out.println("Inicio");
+						for(Figure f:figuras) {
+							System.out.println("Figura");
+							//SquareFigure.getDefault(0, 0).paint(dashboardPanel.getGraphics());
+							f.paint(dashboardPanel.getGraphics());
+						}
+						System.out.println("Fin");
 					}
 				}
 			}
@@ -230,15 +278,19 @@ public class PizarronUI extends JFrame{
 		if(selectedTool == ToolCodes.TOOL_UNSELECT) {
 			throw new DrawException();
 		}else if(selectedTool == ToolCodes.TOOL_CIRCLE) {
-			figure = Circle.getDefault(x, y);
+			figure = CircleFigure.getDefault(x, y);
 		}else if(selectedTool == ToolCodes.TOOL_TRIANGLE) {
-			figure = Triangle.getDefault(x, y);
+			figure = TriangleFigure.getDefault(x, y);
 		}else if(selectedTool == ToolCodes.TOOL_SQUARE) {
-			figure = Square.getDefault(x, y);
+			figure = SquareFigure.getDefault(x, y);
 		}else if(selectedTool == ToolCodes.TOOL_RECTANGLE) {
-			figure = Rectangle.getDefault(x, y);
+			figure = RectangleFigure.getDefault(x, y);
 		}else if(selectedTool == ToolCodes.TOOL_PENCIL) {
-			figure = Pencil.getDefault(x, y);
+			figure = PencilFigure.getDefault(x, y);
+		}else if(selectedTool == ToolCodes.TOOL_TEXT) {
+			figure = TextFigure.getDefault(x, y);
+		}else if(selectedTool == ToolCodes.TOOL_IMAGE) {
+			figure = ImageFigure.getDefault(x, y, imageSelected);
 		}
 		return figure;
 	}
@@ -249,7 +301,7 @@ public class PizarronUI extends JFrame{
 			figure = getFigureDraw(x, y);
 			figure.paint(dashboardPanel.getGraphics());
 		} catch (Exception error) {
-			System.out.println(error.getMessage());
+			error.printStackTrace();
 		}finally {
 			//PRINT MESSAGE
 		}
@@ -267,6 +319,11 @@ public class PizarronUI extends JFrame{
 		toolPanel.add(btnRectangle);
 		toolPanel.add(btnPencil);
 		toolPanel.add(btnCursor);
+		toolPanel.add(btnText);
+		toolPanel.add(btnImage);
+		toolPanel.add(btnExit);
+		toolPanel.add(btnDelete);
+		toolPanel.add(btnSave);
 		pane.add(toolPanel, BorderLayout.WEST);
 		
 		dashboardPanel.setBackground(Color.WHITE);
@@ -290,7 +347,9 @@ public class PizarronUI extends JFrame{
 		borderColorChooser = new JColorChooser();
 		strokeInput = new JTextField("10", 10);
 		btnStroke = new JButton("Change Stoke");
-				
+		
+		imageFileChooser = new JFileChooser();
+		
 		toolPanel = new JPanel();
 		dashboardPanel = new JPanel();
 		try {
@@ -300,6 +359,11 @@ public class PizarronUI extends JFrame{
 			btnRectangle = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/rectangleIcon.png");
 			btnPencil = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/pencilIcon.png");
 			btnCursor = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/cursorIcon.png");
+			btnText = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/textIcon.png");
+			btnImage = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/imageIcon.png");
+			btnExit = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/exitIcon.png");
+			btnDelete = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/deleteIcon.png");
+			btnSave = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/saveIcon.png");
 		}catch(Exception e) {
 			
 		}
