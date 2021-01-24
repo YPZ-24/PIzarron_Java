@@ -1,5 +1,6 @@
-package mx.com.ipn.upiicsa.poo.pizarron.model;
+package mx.com.ipn.upiicsa.poo.pizarron.entity;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -7,7 +8,7 @@ import java.awt.Graphics2D;
 public class Square extends Figure{
 	
 	private static final int DEFAULT_SIDE = 100;
-	private static final Color DEFAULT_BORDER_COLOR = new Color(0, 77, 153);
+	private static final Color DEFAULT_BORDER_COLOR = new Color(255, 0, 0);
 	private static final Color DEFAULT_FILL_COLOR = new Color(0, 77, 153);
 	
 	private int side;
@@ -21,15 +22,20 @@ public class Square extends Figure{
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(borderColor);
-		g2d.drawRect(x, y, side, side);
+		g2d.setStroke(new BasicStroke(stroke));
+		g2d.drawRect(x-(side/2), y-(side/2), side, side);
 		g2d.setColor(fillColor);
-		g2d.fillRect(x+1, y+1, side-1, side-1);
+		g2d.fillRect(x-(side/2)+1, y-(side/2)+1, side-1, side-1);
 	}
 	
 	public static Square getDefault(int x, int y) {
 		return new Square(x, y);
 	}
 	
+	@Override
+	public boolean includesPoint(int px, int py) {
+		return ((px<= x+(side/2)) && (px>= x-(side/2)) && (py <= y+(side/2)) && (py>=y-(side/2)));
+	}
 	
 
 }

@@ -1,14 +1,19 @@
 package mx.com.ipn.upiicsa.poo.pizarron.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -26,6 +31,7 @@ public class LoginUI extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	
+	private JLabel titleLb;
 	private JLabel loginLb;
 	private JTextField loginTxt;
 	private JLabel passwordLb;
@@ -50,6 +56,7 @@ public class LoginUI extends JFrame{
 	}
 	
 	private void initializeComponents() {
+		titleLb = new JLabel("LOGIN");
 		passwordLb = new JLabel("Password: ");
 		passwordTxt = new JPasswordField("Password", 15);
 		loginLb = new JLabel("Login: ");
@@ -78,7 +85,9 @@ public class LoginUI extends JFrame{
 				}else if(usuarioResult.getStatus() == StatusCodes.ERROR_LOGIN){
 					System.out.println("Error en el login "+usuarioResult.getErrors().get(0).getMessage());
 				}else {
-					System.out.println("SUCCESS");
+					JOptionPane.showMessageDialog(null, "Hi...!");
+					dispose();
+					PizarronUI ventanaPizarronUI = new PizarronUI();
 				}
 			}
 		});
@@ -87,9 +96,7 @@ public class LoginUI extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				/*final JDialog frame = new JDialog(getConte, "Register", true);
-				frame.getContentPane().add(comp);
-				frame.setVisible(true);*/
+				dispose();
 				RegisterUI registerUI = new RegisterUI();
 				
 			}
@@ -98,22 +105,29 @@ public class LoginUI extends JFrame{
 	
 	private void buildLayout() {
 		Container pane = getContentPane();
+		pane.setLayout(new BorderLayout());
+		
+		JPanel inputsPanel = new JPanel();
 		SpringLayout layout = new SpringLayout();
-		pane.setLayout(layout);
-		
-		pane.add(loginLb);
-		pane.add(loginTxt);
-		
-		pane.add(passwordLb);
-		pane.add(passwordTxt);
-		
-		pane.add(loginBtn);
-		pane.add(registerBtn);
-		
-		SpringUtilities.makeCompactGrid(pane,
-                3, 2, 		//rows, cols
+		inputsPanel.setLayout(layout);
+		inputsPanel.add(loginLb);
+		inputsPanel.add(loginTxt);
+		inputsPanel.add(passwordLb);
+		inputsPanel.add(passwordTxt);
+		SpringUtilities.makeCompactGrid(inputsPanel,
+                2, 2, 		//rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
+		
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
+		buttonsPanel.add(loginBtn);
+		buttonsPanel.add(registerBtn);
+		
+		pane.add(inputsPanel, BorderLayout.CENTER);
+		pane.add(buttonsPanel, BorderLayout.PAGE_END);
+		pane.add(titleLb, BorderLayout.PAGE_START);
+				
 	}
 	
 }

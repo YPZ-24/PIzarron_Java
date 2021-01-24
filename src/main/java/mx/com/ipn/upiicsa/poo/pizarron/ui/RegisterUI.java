@@ -89,8 +89,8 @@ public class RegisterUI extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				dispose();
+				RegisterUI registerUI = new RegisterUI();
 			}
 		});
 	}

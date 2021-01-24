@@ -1,4 +1,4 @@
-package mx.com.ipn.upiicsa.poo.pizarron.model;
+package mx.com.ipn.upiicsa.poo.pizarron.entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -22,6 +22,13 @@ public abstract class Figure {
 	}
 	
 	public abstract void paint(Graphics g);
+	public abstract boolean includesPoint(int px, int py);
+	
+	public void repaint(Graphics g, int x, int y) {
+		setX(x);
+		setY(y);
+		paint(g);
+	}
 	
 	public int getX() {
 		return x;

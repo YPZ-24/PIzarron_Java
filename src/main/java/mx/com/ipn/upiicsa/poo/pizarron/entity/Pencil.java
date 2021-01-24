@@ -1,5 +1,6 @@
-package mx.com.ipn.upiicsa.poo.pizarron.model;
+package mx.com.ipn.upiicsa.poo.pizarron.entity;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -26,6 +27,7 @@ public class Pencil extends Figure{
 		if(points.size()>2) {
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setColor(borderColor);
+			g2d.setStroke(new BasicStroke(stroke/2));
 			for(int i=1; i<points.size(); i++) {
 				Point a = points.get(i-1);
 				Point b = points.get(i);
@@ -40,6 +42,11 @@ public class Pencil extends Figure{
 	
 	public void addPoint(int x, int y) {
 		points.add(new Point(x,y));
+	}
+
+	@Override
+	public boolean includesPoint(int px, int py) {
+		return false;
 	}
 
 }
