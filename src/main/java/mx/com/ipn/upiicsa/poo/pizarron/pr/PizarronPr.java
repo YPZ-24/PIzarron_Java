@@ -35,11 +35,8 @@ public class PizarronPr {
 		Figure figure = null;;
 		
 		for(Figure f : figuras) {
-			System.out.println("ENtre");
 			if(f.includesPoint(px, py)) {
-				System.out.println("Encontre");
 				figure = f;
-				System.out.println("f "+f);
 				break;
 			}
 		}

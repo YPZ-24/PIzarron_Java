@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 public abstract class Figure {
 	
-	private static final int DEFAULT_STROKE = 10;
+	private static final int DEFAULT_STROKE = 1;
 	
 	protected int x;
 	protected int y;

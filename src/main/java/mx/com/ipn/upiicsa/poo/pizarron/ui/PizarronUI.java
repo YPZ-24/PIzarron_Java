@@ -32,34 +32,31 @@ import mx.com.ipn.upiicsa.poo.pizarron.util.ToolCodes;
 
 public class PizarronUI extends JFrame{
 	
+	private static final long serialVersionUID = 1L;
+	
 	private ArrayList<Figure> figuras;
 	private Figure figureSelected;
 	
 	private JPanel optionsPanel;
 	private JPanel toolPanel;
-	private DashboardPanel dashboardPanel;
+	private JPanel dashboardPanel;
 	private JButton btnCircle;
 	private JButton btnTriangle;
 	private JButton btnSquare;
 	private JButton btnRectangle;
 	private JButton btnPencil;
 	private JButton btnCursor;
-	/*
-	private Color fillColor;
-	private Color borderColor;
-	private int stroke;*/
-	private JButton fillColorButton;
-	private JButton borderColorButton;
+	
+	private JButton btnFillColor;
+	private JButton btnBorderColor;
 	private JColorChooser fillColorChooser;
 	private JColorChooser borderColorChooser;
 	private JTextField strokeInput;
+	private JButton btnStroke;
 	
 	private int selectedTool;
 	private int drawingState;
 	private Figure pencilTemp;
-	
-	
-	private static final long serialVersionUID = 1L;
 
 	public PizarronUI() {
 		initComponents();
@@ -85,23 +82,34 @@ public class PizarronUI extends JFrame{
 	}
 
 	private void initializeListeners() {
-		fillColorButton.addActionListener(new ActionListener() {
+		btnFillColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Color color = showColorChooser(fillColorChooser);
 				if(figureSelected != null) {
-					System.out.println("Si hay figura");
 					Figure figureUpdated = PizarronPr.changeFillColor(color, figureSelected);
 					figureUpdated.paint(dashboardPanel.getGraphics());
-				}else {
-					System.out.println("NO hay figura");
 				}
 			}
 		});
-		borderColorButton.addActionListener(new ActionListener() {
+		btnBorderColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Color c = showColorChooser(borderColorChooser);
+				Color color = showColorChooser(borderColorChooser);
+				if(figureSelected != null) {
+					Figure figureUpdated = PizarronPr.changeBorderColor(color, figureSelected);
+					figureUpdated.paint(dashboardPanel.getGraphics());
+				}
+			}
+		});
+		btnStroke.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int stroke = Integer.parseInt(strokeInput.getText());
+				if(figureSelected != null) {
+					Figure figureUpdated = PizarronPr.changeStroke(stroke, figureSelected);
+					figureUpdated.paint(dashboardPanel.getGraphics());
+				}
 			}
 		});
 		
@@ -237,13 +245,11 @@ public class PizarronUI extends JFrame{
 	
 	public Figure getFigure(int x, int y) {
 		Figure figure= null;
-		String message;
 		try {
 			figure = getFigureDraw(x, y);
 			figure.paint(dashboardPanel.getGraphics());
-			message = "Se dibujo una figura";
 		} catch (Exception error) {
-			message = "Excepcion";
+			System.out.println(error.getMessage());
 		}finally {
 			//PRINT MESSAGE
 		}
@@ -266,9 +272,10 @@ public class PizarronUI extends JFrame{
 		dashboardPanel.setBackground(Color.WHITE);
 		pane.add(dashboardPanel, BorderLayout.CENTER);
 		
-		optionsPanel.add(fillColorButton);
-		optionsPanel.add(borderColorButton);
+		optionsPanel.add(btnFillColor);
+		optionsPanel.add(btnBorderColor);
 		optionsPanel.add(strokeInput);
+		optionsPanel.add(btnStroke);
 		pane.add(optionsPanel, BorderLayout.SOUTH);
 		
 	}
@@ -277,14 +284,15 @@ public class PizarronUI extends JFrame{
 		
 		figuras = new ArrayList<>();
 		optionsPanel = new JPanel();
-		fillColorButton = new JButton("Fill");
-		borderColorButton = new JButton("Border");
+		btnFillColor = new JButton("Fill");
+		btnBorderColor = new JButton("Border");
 		fillColorChooser = new JColorChooser();
 		borderColorChooser = new JColorChooser();
-		strokeInput = new JTextField("1", 10);
+		strokeInput = new JTextField("10", 10);
+		btnStroke = new JButton("Change Stoke");
 				
 		toolPanel = new JPanel();
-		dashboardPanel = new DashboardPanel();
+		dashboardPanel = new JPanel();
 		try {
 			btnCircle = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/cicleIcon.png");
 			btnTriangle = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/triangleIcon.png");
