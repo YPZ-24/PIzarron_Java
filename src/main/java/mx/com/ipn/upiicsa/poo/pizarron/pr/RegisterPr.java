@@ -29,11 +29,11 @@ public class RegisterPr {
 			Validator validator = validatorFactory.getValidator();
 			Set<ConstraintViolation<UserDto>> constraintViolations = validator.validate(userDto);
 			if(constraintViolations.isEmpty()) {
-				System.out.println("NO hay errores");
 				List<Error> errors = new ArrayList<Error>();
 					if(userDto.getPassword().equals(userDto.getConfirmPassword())) {
 						User newUser = null;
 						try {
+							userResult.setStatus(StatusCodes.SUCCESS);
 							newUser = UserBs.save(userDto.toEntity());
 							userResult.setResult(UserDto.fromEntity(newUser));
 						} catch (DuplicatedLoginException e) {

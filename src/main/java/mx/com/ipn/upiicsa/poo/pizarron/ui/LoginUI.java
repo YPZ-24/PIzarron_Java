@@ -2,11 +2,15 @@ package mx.com.ipn.upiicsa.poo.pizarron.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 
@@ -55,7 +60,7 @@ public class LoginUI extends JFrame{
 	}
 	
 	private void initializeComponents() {
-		titleLb = new JLabel("LOGIN");
+		titleLb = new JLabel("LOGIN", SwingConstants.CENTER);
 		passwordLb = new JLabel("Password: ");
 		passwordTxt = new JPasswordField("Password", 15);
 		loginLb = new JLabel("Login: ");
@@ -125,6 +130,16 @@ public class LoginUI extends JFrame{
 		pane.add(inputsPanel, BorderLayout.CENTER);
 		pane.add(buttonsPanel, BorderLayout.PAGE_END);
 		pane.add(titleLb, BorderLayout.PAGE_START);
+		
+		
+		
+		Font fontTitle = new Font("Arial", Font.BOLD, 30);
+		titleLb.setFont(fontTitle);
+		loginBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		registerBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		pane.setBackground(Color.white);
+		inputsPanel.setBackground(Color.white);
+		buttonsPanel.setBackground(Color.white);
 				
 	}
 	

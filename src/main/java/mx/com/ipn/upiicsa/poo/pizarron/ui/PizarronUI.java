@@ -388,7 +388,9 @@ public class PizarronUI extends JFrame{
 		optionsPanel.add(strokeInput);
 		optionsPanel.add(btnStroke);
 		optionsPanel.add(btnRefresh);
-		pane.add(optionsPanel, BorderLayout.SOUTH);		
+		pane.add(optionsPanel, BorderLayout.SOUTH);	
+		
+		optionsPanel.setBackground(new Color(191, 191, 191));
 	}
 
 	private void instantiateComponents() {

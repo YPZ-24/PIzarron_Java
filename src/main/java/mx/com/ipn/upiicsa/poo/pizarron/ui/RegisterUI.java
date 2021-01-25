@@ -1,5 +1,6 @@
 package mx.com.ipn.upiicsa.poo.pizarron.ui;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -16,6 +18,7 @@ import mx.com.ipn.upiicsa.poo.pizarron.dto.UserDto;
 import mx.com.ipn.upiicsa.poo.pizarron.pr.RegisterPr;
 import mx.com.ipn.upiicsa.poo.pizarron.util.Result;
 import mx.com.ipn.upiicsa.poo.pizarron.util.SpringUtilities;
+import mx.com.ipn.upiicsa.poo.pizarron.util.StatusCodes;
 
 public class RegisterUI extends JFrame{
 
@@ -82,6 +85,13 @@ public class RegisterUI extends JFrame{
 				String confirmPassword = new String(confirmPasswordTxt.getPassword());
 				UserDto userDto = new UserDto(name, lastName, secondLastName, login, password, confirmPassword);
 				Result<UserDto> result = RegisterPr.register(userDto);
+				if(result.getStatus()==StatusCodes.SUCCESS) {
+					JOptionPane.showMessageDialog(null, "LISTO");
+					dispose();
+					LoginUI loginUI = new LoginUI();
+				}else{
+					JOptionPane.showMessageDialog(null, "Ocurrio un error");
+				}
 			}
 		});
 		cancelBtn.addActionListener(new ActionListener() {
@@ -89,7 +99,7 @@ public class RegisterUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
-				RegisterUI registerUI = new RegisterUI();
+				LoginUI loginUI = new LoginUI();
 			}
 		});
 	}
@@ -118,6 +128,8 @@ public class RegisterUI extends JFrame{
                 7  , 2, 		//rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
+		
+		pane.setBackground(Color.white);
 	}
 	
 	

@@ -1,7 +1,11 @@
 package mx.com.ipn.upiicsa.poo.pizarron.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -10,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 import mx.com.ipn.upiicsa.poo.pizarron.entity.Diagram;
@@ -26,13 +31,13 @@ public class DiagramExplorerUI extends JFrame{
 	
 	public DiagramExplorerUI(int idUser) {
 		this.idUser = idUser;
-		System.out.println("ID: "+idUser);
 		initComponents();
 	}
 	
 	private void initComponents() {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Diagram Explorer");
+		setPreferredSize(new Dimension(400, 400));
 		setResizable(false);
 		initializeComponents();
 		buildLayout();
@@ -43,7 +48,7 @@ public class DiagramExplorerUI extends JFrame{
 	
 	private void initializeComponents() {
 		btnNewDiagram = new JButton("Nuevo Diagrama");
-		titleLb = new JLabel("DiagramExplorer");
+		titleLb = new JLabel("Diagram Explorer");
 		diagrams = DiagramExplorerPr.getUserDiagrams(idUser);
 		diagramButtons = new ArrayList<>();
 		for(Diagram d: diagrams) {
@@ -53,19 +58,21 @@ public class DiagramExplorerUI extends JFrame{
 	
 	private void buildLayout() {
 		Container pane = getContentPane();
-		pane.setLayout(new BorderLayout());
-		//JPanel panel = new JPanel();
-		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+		
+		BoxLayout bx = new BoxLayout(pane, BoxLayout.Y_AXIS);
+		pane.setLayout(bx);
 		pane.add(titleLb);
 		pane.add(btnNewDiagram);
 		for(JButton btn : diagramButtons) {
 			pane.add(btn);
+			btn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		}
 		
-		//pane.add(inputsPanel, BorderLayout.CENTER);
-		//pane.add(buttonsPanel, BorderLayout.PAGE_END);
-		//pane.add(titleLb, BorderLayout.PAGE_START);
-				
+		Font fontTitle = new Font("Arial", Font.BOLD, 30);
+		titleLb.setFont(fontTitle);
+		titleLb.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnNewDiagram.setAlignmentX(Component.CENTER_ALIGNMENT);
+		pane.setBackground(Color.white);
 	}
 	
 	private void initializeListeners() {
