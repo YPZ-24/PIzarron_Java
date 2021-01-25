@@ -17,6 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.WindowConstants;
+import javax.swing.border.Border;
 
 import mx.com.ipn.upiicsa.poo.pizarron.dto.LoginDto;
 import mx.com.ipn.upiicsa.poo.pizarron.dto.UserDto;
@@ -37,7 +38,6 @@ public class LoginUI extends JFrame{
 	private JPasswordField passwordTxt;
 	private JButton loginBtn;
 	private JButton registerBtn;
-	
 	
 	public LoginUI() {
 		initComponents();
@@ -69,24 +69,24 @@ public class LoginUI extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				LoginDto loginDto = new LoginDto(loginTxt.getText(), passwordTxt.getText());
+				String login = loginTxt.getText();
+				String password = new String(passwordTxt.getPassword());
+				LoginDto loginDto = new LoginDto(login, password);
 				Result<UserDto> usuarioResult =  LoginPr.login(loginDto);
 				if(usuarioResult.getStatus() == StatusCodes.ERROR_FORM) {
 					List<Error> errors = usuarioResult.getErrors();
 					if(errors.contains(new Error("password"))) {
 						passwordTxt.setBackground(Color.RED);
-						//System.out.println("Hay error en el password");
 					}
 					if(errors.contains(new Error("login"))) {
 						loginTxt.setBackground(Color.RED);
-						//System.out.println("Hay error en el login");
 					}
 				}else if(usuarioResult.getStatus() == StatusCodes.ERROR_LOGIN){
 					System.out.println("Error en el login "+usuarioResult.getErrors().get(0).getMessage());
 				}else {
-					JOptionPane.showMessageDialog(null, "Hi...!");
+					//INICIA SESIÓN
 					dispose();
-					PizarronUI ventanaPizarronUI = new PizarronUI();
+					DiagramExplorerUI diagramExplorerUI = new DiagramExplorerUI(usuarioResult.getResult().getId());
 				}
 			}
 		});
@@ -97,7 +97,6 @@ public class LoginUI extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 				RegisterUI registerUI = new RegisterUI();
-				
 			}
 		});
 	}

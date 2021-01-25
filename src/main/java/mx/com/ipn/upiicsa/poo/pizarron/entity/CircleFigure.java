@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import mx.com.ipn.upiicsa.poo.pizarron.util.ToolCodes;
+
 public class CircleFigure extends Figure{
 
 	private static final int DEFAULT_RADIUS = 50;
@@ -14,7 +16,7 @@ public class CircleFigure extends Figure{
 	private int radius;
 	
 	protected CircleFigure(int x, int y) {
-		super(x, y, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
+		super(x, y, ToolCodes.TOOL_CIRCLE, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
 		radius = DEFAULT_RADIUS;
 	}
 

@@ -12,15 +12,19 @@ public abstract class Figure {
 	protected int stroke;
 	protected Color borderColor;
 	protected Color fillColor;
+	protected int tool;
 	
-	protected Figure(int x, int y, Color borderColor, Color fillColor) {
+	protected Figure(int x, int y, int tool, Color borderColor, Color fillColor) {
 		this.x = x;
 		this.y = y;
+		this.tool = tool;
 		this.stroke = DEFAULT_STROKE;
 		this.borderColor = borderColor;
 		this.fillColor = fillColor;
 	}
 	
+	public Figure() {}
+
 	public abstract void paint(Graphics g);
 	public abstract boolean includesPoint(int px, int py);
 	
@@ -60,6 +64,15 @@ public abstract class Figure {
 	public void setFillColor(Color fillColor) {
 		this.fillColor = fillColor;
 	}
+
+	public int getTool() {
+		return tool;
+	}
+
+	public void setTool(int tool) {
+		this.tool = tool;
+	}
+	
 	
 	
 	

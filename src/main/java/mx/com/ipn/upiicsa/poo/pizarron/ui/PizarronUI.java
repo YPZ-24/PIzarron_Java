@@ -18,11 +18,13 @@ import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import mx.com.ipn.upiicsa.poo.pizarron.entity.CircleFigure;
+import mx.com.ipn.upiicsa.poo.pizarron.entity.Diagram;
 import mx.com.ipn.upiicsa.poo.pizarron.entity.Figure;
 import mx.com.ipn.upiicsa.poo.pizarron.entity.ImageFigure;
 import mx.com.ipn.upiicsa.poo.pizarron.entity.PencilFigure;
@@ -42,6 +44,8 @@ public class PizarronUI extends JFrame{
 	private ArrayList<Figure> figuras;
 	private Figure figureSelected;
 	private File imageSelected;
+	private Diagram diagram;
+	private int idUser;
 	
 	private JPanel optionsPanel;
 	private JPanel toolPanel;
@@ -58,23 +62,28 @@ public class PizarronUI extends JFrame{
 	private JButton btnDelete;
 	private JButton btnSave;
 	
+	
 	private JFileChooser imageFileChooser;
 	
 	private JButton btnFillColor;
 	private JButton btnBorderColor;
-	private JColorChooser fillColorChooser;
-	private JColorChooser borderColorChooser;
 	private JTextField strokeInput;
 	private JButton btnStroke;
+	private JButton btnRefresh;
 	
 	private int selectedTool;
 	private int drawingState;
 	private Figure pencilTemp;
 
-	public PizarronUI() {
-		initComponents();
+	public PizarronUI(Diagram d, int idUser) {
+		
+		this.diagram = d;
+		this.idUser = idUser;
+		this.diagram.setIdUser(idUser);
 		selectedTool = ToolCodes.TOOL_UNSELECT;
 		drawingState = DrawingStates.DRAWING_INACTIVE;
+		
+		initComponents();
 	}
 	
 	public void initComponents() {
@@ -90,8 +99,8 @@ public class PizarronUI extends JFrame{
 		setVisible(true);
 	}
 	
-	private Color showColorChooser(JColorChooser chooser){
-		return chooser.showDialog(this,"Selecciona el color", Color.BLACK);
+	private Color showColorChooser(){
+		return JColorChooser.showDialog(this,"Selecciona el color", Color.BLACK);
 	}
 	
 	private File showImageFileChooser() {
@@ -102,12 +111,54 @@ public class PizarronUI extends JFrame{
         }
         return file;
 	}
+	
+	private void showAlert(String message) {
+		JOptionPane.showMessageDialog(this, message);
+	}
 
 	private void initializeListeners() {
+		btnDelete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int input = JOptionPane.showConfirmDialog(null, "Seguro que quieres borrarlo?");
+				// 0=yes, 1=no, 2=cancel
+				if(input==0) {
+					boolean wasDeleted = PizarronPr.deleteDiagram(diagram);
+					if(wasDeleted) {
+						showAlert("Fue borrado");
+						dispose();
+						DiagramExplorerUI diagramExplorerUI = new DiagramExplorerUI(idUser);
+					}else {
+						showAlert("No se pudo borrar");
+					}
+				}
+			}
+		});
+		btnExit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				DiagramExplorerUI diagramExplorerUI = new DiagramExplorerUI(idUser);
+			}
+		});
+		btnSave.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Diagram diagramSaved = PizarronPr.saveDiagram(diagram, figuras);
+				if(diagramSaved!=null) {
+					diagram = diagramSaved;
+					showAlert("Guardado con exito");
+				}
+			}
+		});
 		btnFillColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Color color = showColorChooser(fillColorChooser);
+				Color color = showColorChooser();
 				if(figureSelected != null) {
 					Figure figureUpdated = PizarronPr.changeFillColor(color, figureSelected);
 					figureUpdated.paint(dashboardPanel.getGraphics());
@@ -117,7 +168,7 @@ public class PizarronUI extends JFrame{
 		btnBorderColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Color color = showColorChooser(borderColorChooser);
+				Color color = showColorChooser();
 				if(figureSelected != null) {
 					Figure figureUpdated = PizarronPr.changeBorderColor(color, figureSelected);
 					figureUpdated.paint(dashboardPanel.getGraphics());
@@ -134,7 +185,12 @@ public class PizarronUI extends JFrame{
 				}
 			}
 		});
-		
+		btnRefresh.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				drawFigures();
+			}
+		});
 		btnCircle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -249,7 +305,6 @@ public class PizarronUI extends JFrame{
 					if(indexFigureWherePointer != null) {
 						//AQUÍ DEBEMOS REPINTAR LA FIGURA
 
-						Figure figureWherePointer = figuras.get(indexFigureWherePointer);
 						figuras.get(indexFigureWherePointer).repaint(dashboardPanel.getGraphics(), x, y);
 						Figure figureUpdated = figuras.get(indexFigureWherePointer);
 						figuras.set(indexFigureWherePointer, figureUpdated);
@@ -257,20 +312,18 @@ public class PizarronUI extends JFrame{
 						//AQUÍ DEBEMOS ELIMINAR LA FIGURA QUE QUEDO EN EL RASTRO
 						
 						Graphics2D g2d = (Graphics2D)(dashboardPanel.getGraphics());
-						g2d.clearRect(0, 0, dashboardPanel.getWidth(), dashboardPanel.getHeight());
-						
-						
-						System.out.println("Inicio");
-						for(Figure f:figuras) {
-							System.out.println("Figura");
-							//SquareFigure.getDefault(0, 0).paint(dashboardPanel.getGraphics());
-							f.paint(dashboardPanel.getGraphics());
-						}
-						System.out.println("Fin");
+						g2d.clearRect(0, 0, dashboardPanel.getWidth(), dashboardPanel.getHeight());						
+						drawFigures();
 					}
 				}
 			}
 		});
+	}
+	
+	private void drawFigures() {
+		for(Figure f:figuras) {
+			f.paint(dashboardPanel.getGraphics());
+		}
 	}
 
 	private Figure getFigureDraw(int x, int y) throws DrawException {
@@ -288,7 +341,8 @@ public class PizarronUI extends JFrame{
 		}else if(selectedTool == ToolCodes.TOOL_PENCIL) {
 			figure = PencilFigure.getDefault(x, y);
 		}else if(selectedTool == ToolCodes.TOOL_TEXT) {
-			figure = TextFigure.getDefault(x, y);
+			String text = JOptionPane.showInputDialog("Ingresa un texto");
+			figure = TextFigure.getDefault(x, y, text);
 		}else if(selectedTool == ToolCodes.TOOL_IMAGE) {
 			figure = ImageFigure.getDefault(x, y, imageSelected);
 		}
@@ -333,25 +387,27 @@ public class PizarronUI extends JFrame{
 		optionsPanel.add(btnBorderColor);
 		optionsPanel.add(strokeInput);
 		optionsPanel.add(btnStroke);
-		pane.add(optionsPanel, BorderLayout.SOUTH);
-		
+		optionsPanel.add(btnRefresh);
+		pane.add(optionsPanel, BorderLayout.SOUTH);		
 	}
 
 	private void instantiateComponents() {
+		toolPanel = new JPanel();
+		dashboardPanel = new JPanel();
 		
 		figuras = new ArrayList<>();
+		figuras = PizarronPr.getDiagramFigures(diagram);
+		
+		//figuras = new ArrayList<>();
 		optionsPanel = new JPanel();
 		btnFillColor = new JButton("Fill");
 		btnBorderColor = new JButton("Border");
-		fillColorChooser = new JColorChooser();
-		borderColorChooser = new JColorChooser();
 		strokeInput = new JTextField("10", 10);
 		btnStroke = new JButton("Change Stoke");
+		btnRefresh = new JButton("Refresh");
 		
 		imageFileChooser = new JFileChooser();
 		
-		toolPanel = new JPanel();
-		dashboardPanel = new JPanel();
 		try {
 			btnCircle = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/cicleIcon.png");
 			btnTriangle = ImageJButton.getImageButton("src/main/java/mx/com/ipn/upiicsa/poo/pizarron/resources/icons/triangleIcon.png");

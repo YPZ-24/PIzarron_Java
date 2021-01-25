@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import mx.com.ipn.upiicsa.poo.pizarron.util.ToolCodes;
+
 public class SquareFigure extends Figure{
 	
 	private static final int DEFAULT_SIDE = 100;
@@ -14,7 +16,7 @@ public class SquareFigure extends Figure{
 	private int side;
 	
 	protected SquareFigure(int x, int y) {
-		super(x,y, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
+		super(x,y, ToolCodes.TOOL_SQUARE, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
 		side = DEFAULT_SIDE;
 	}
 	

@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 
+import mx.com.ipn.upiicsa.poo.pizarron.util.ToolCodes;
+
 public class TriangleFigure extends Figure{
 	
 	private static final int DEFAULT_BASE = 100;
@@ -18,7 +20,7 @@ public class TriangleFigure extends Figure{
 	private int base;
 	
 	protected TriangleFigure(int x, int y) {
-		super(x, y, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
+		super(x, y, ToolCodes.TOOL_TRIANGLE, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
 		altura = DEFAULT_ALTURA;
 		base = DEFAULT_BASE;
 	}

@@ -11,6 +11,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import mx.com.ipn.upiicsa.poo.pizarron.util.ToolCodes;
+
 
 public class ImageFigure extends Figure{
 	
@@ -23,7 +25,7 @@ public class ImageFigure extends Figure{
 	private int ancho, alto;
 	
 	protected ImageFigure(int x, int y, File file) {
-		super(x, y, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
+		super(x, y, ToolCodes.TOOL_IMAGE, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
 		this.file = file;
 		alto = DEFAULT_ALTO;
 		ancho = DEFAULT_ANCHO;
@@ -35,12 +37,9 @@ public class ImageFigure extends Figure{
 	
 	@Override
 	public void paint(Graphics g) {
-		
-			Graphics2D g2d = (Graphics2D) g;
-			//BufferedImage imagen = ImageIO.read(file);
-			Image imagen = Toolkit.getDefaultToolkit().getImage(file.getPath());
-			g2d.drawImage(imagen, x-(ancho/2), y-(alto/2), ancho, alto, null); 
-		
+		Graphics2D g2d = (Graphics2D) g;
+		Image imagen = Toolkit.getDefaultToolkit().getImage(file.getPath());
+		g2d.drawImage(imagen, x-(ancho/2), y-(alto/2), ancho, alto, null); 
 	}
 
 	@Override

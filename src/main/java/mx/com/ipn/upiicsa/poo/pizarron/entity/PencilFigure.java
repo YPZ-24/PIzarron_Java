@@ -8,6 +8,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import mx.com.ipn.upiicsa.poo.pizarron.util.ToolCodes;
+
 public class PencilFigure extends Figure{
 
 	private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
@@ -17,7 +19,7 @@ public class PencilFigure extends Figure{
 	
 	
 	protected PencilFigure(int x, int y) {
-		super(x, y, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
+		super(x, y, ToolCodes.TOOL_PENCIL, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
 		points = new ArrayList<Point>();
 		points.add(new Point(x,y));
 	}

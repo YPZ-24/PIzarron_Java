@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import mx.com.ipn.upiicsa.poo.pizarron.util.ToolCodes;
+
 public class RectangleFigure extends Figure{
 	private static final int DEFAULT_SIDE_A = 150;
 	private static final int DEFAULT_SIDE_B = 80;
@@ -15,7 +17,7 @@ public class RectangleFigure extends Figure{
 	private int altura;
 	
 	protected RectangleFigure(int x, int y) {
-		super(x,y, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
+		super(x,y, ToolCodes.TOOL_RECTANGLE, DEFAULT_BORDER_COLOR, DEFAULT_FILL_COLOR);
 		base = DEFAULT_SIDE_A;
 		altura = DEFAULT_SIDE_B;
 	}

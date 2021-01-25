@@ -82,7 +82,6 @@ public class RegisterUI extends JFrame{
 				String confirmPassword = new String(confirmPasswordTxt.getPassword());
 				UserDto userDto = new UserDto(name, lastName, secondLastName, login, password, confirmPassword);
 				Result<UserDto> result = RegisterPr.register(userDto);
-				
 			}
 		});
 		cancelBtn.addActionListener(new ActionListener() {

@@ -3,6 +3,8 @@ package mx.com.ipn.upiicsa.poo.pizarron.pr;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import mx.com.ipn.upiicsa.poo.pizarron.bs.DiagramBs;
+import mx.com.ipn.upiicsa.poo.pizarron.entity.Diagram;
 import mx.com.ipn.upiicsa.poo.pizarron.entity.Figure;
 
 public class PizarronPr {
@@ -59,5 +61,24 @@ public class PizarronPr {
 		return figure;
 	}
 	
+	public static boolean deleteDiagram(Diagram diagram) {
+		return DiagramBs.deleteDiagram(diagram);
+	}
 	
+	public static Diagram saveDiagram(Diagram diagram, ArrayList<Figure> figuras) {	
+		boolean diagramExists = DiagramBs.diagramExists(diagram);
+		Diagram diagramSaved = null;
+		if(diagramExists) {
+			//Actualizar
+			diagramSaved = DiagramBs.updateDiagram(diagram, figuras);
+		}else {
+			//Crear
+			diagramSaved = DiagramBs.createDiagramWithFigures(diagram.getIdUser(), figuras);
+		}
+		return diagramSaved;
+	}
+	
+	public static ArrayList<Figure> getDiagramFigures(Diagram d){
+		return DiagramBs.getDiagramFigures(d);
+	}
 }

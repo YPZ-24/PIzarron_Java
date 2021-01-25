@@ -5,9 +5,10 @@ import mx.com.ipn.upiicsa.poo.pizarron.ui.PizarronUI;
 
 public class App 
 {
+	
     public static void main( String[] args ){
-        PizarronUI pizarron = new PizarronUI();
-    	//LoginUI login = new LoginUI();
+        //PizarronUI pizarron = new PizarronUI();
+    	LoginUI login = new LoginUI();
     }
     
 }
